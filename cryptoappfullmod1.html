@@ -1849,6 +1849,68 @@
         // Sistema de alertas ativados (mantido para funcionalidade, mas não exibido em painel separado)
         let activatedAlerts = [];
         
+        // ===== UTILITÁRIOS DE PERFORMANCE =====
+        
+        /**
+         * Debounce - Atrasa a execução de uma função até que um tempo específico tenha passado
+         * desde a última vez que foi chamada
+         * @param {Function} func - Função a ser debounced
+         * @param {number} wait - Tempo de espera em ms
+         * @returns {Function} - Função debounced
+         */
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        /**
+         * Throttle - Limita a frequência de execução de uma função
+         * @param {Function} func - Função a ser throttled
+         * @param {number} limit - Tempo mínimo entre execuções em ms
+         * @returns {Function} - Função throttled
+         */
+        function throttle(func, limit) {
+            let inThrottle;
+            return function(...args) {
+                if (!inThrottle) {
+                    func.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+        
+        /**
+         * Lazy load - Carrega imagens quando estão prestes a aparecer na viewport
+         */
+        function setupLazyLoading() {
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                                observer.unobserve(img);
+                            }
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+        }
+        
         // Dados de mercado em tempo real
         let marketData = {
             btcDominance: null,
@@ -7507,9 +7569,14 @@
             document.getElementById('scroll-to-top').addEventListener('click', scrollToTop);
             document.getElementById('scroll-to-bottom').addEventListener('click', scrollToBottom);
 
-            document.getElementById('search-input').addEventListener('input', e => {
-                currentSearchTerm = e.target.value.trim();
+            // Usar debounce para otimizar a busca
+            const debouncedSearch = debounce((searchTerm) => {
+                currentSearchTerm = searchTerm;
                 renderAll();
+            }, 300);
+            
+            document.getElementById('search-input').addEventListener('input', e => {
+                debouncedSearch(e.target.value.trim());
             });
             
             let searchTimeout;
