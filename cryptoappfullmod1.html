@@ -3983,42 +3983,50 @@
                         }
                         return `
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">1</div>
+                                <div class="tooltip-step-number">🎯</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Definição Técnica:</strong> RSI (Relative Strength Index) é um oscilador de momentum que mede a velocidade e variação dos movimentos de preço em uma escala de 0 a 100.
+                                    <strong>O QUE É RSI?</strong><br>
+                                    Imagine um "termômetro" que mede se muita gente está comprando ou vendendo a criptomoeda.
+                                    O RSI vai de 0 a 100 e te ajuda a saber se o preço está "quente demais" ou "frio demais".
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">2</div>
+                                <div class="tooltip-step-number">📊</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Cálculo (14 períodos):</strong> Compara a média dos ganhos com a média das perdas nos últimos 14 períodos, usando a fórmula: RSI = 100 - (100 / (1 + RS)), onde RS = Média Ganhos / Média Perdas.
-                                </div>
-                            </div>
-                            <div class="tooltip-step">
-                                <div class="tooltip-step-number">3</div>
-                                <div class="tooltip-step-content">
-                                    <strong>Faixas de Referência:</strong>
-                                    <ul>
-                                        <li><strong>0-30:</strong> Zona de sobrevenda (potencial compra)</li>
-                                        <li><strong>30-70:</strong> Zona neutra</li>
-                                        <li><strong>70-100:</strong> Zona de sobrecompra (potencial venda)</li>
+                                    <strong>COMO LER:</strong>
+                                    <ul style="margin: 8px 0; padding-left: 20px;">
+                                        <li><strong>0-30 (FRIO):</strong> Moeda muito "barata" - muita gente vendeu, pode ser hora de COMPRAR</li>
+                                        <li><strong>30-70 (NORMAL):</strong> Preço equilibrado - aguarde melhor momento</li>
+                                        <li><strong>70-100 (QUENTE):</strong> Moeda muito "cara" - muita gente comprou, pode ser hora de VENDER</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">4</div>
+                                <div class="tooltip-step-number">💡</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Como usar neste painel:</strong> Combine RSI com outros indicadores. RSI baixo + preço próximo do suporte = forte sinal de compra.
+                                    <strong>PARA ${ticker} AGORA:</strong><br>
+                                    ${rsiValue !== null ? (
+                                        rsiValue <= 30 
+                                        ? `Com RSI em ${rsiValue.toFixed(1)}, ${ticker} está em zona de sobrevenda. Muita gente vendeu e o preço caiu bastante. Historicamente, isso costuma ser um bom momento de compra, pois o preço tende a subir depois.`
+                                        : rsiValue >= 70
+                                        ? `Com RSI em ${rsiValue.toFixed(1)}, ${ticker} está em zona de sobrecompra. Muita gente comprou e empurrou o preço para cima. Pode estar "caro demais" e prestes a cair.`
+                                        : `Com RSI em ${rsiValue.toFixed(1)}, ${ticker} está em zona neutra. O preço está equilibrado, sem sinais extremos de compra ou venda. Aguarde o RSI sair dessa zona para ter um sinal mais claro.`
+                                    ) : 'Dados de RSI não disponíveis no momento.'}
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">5</div>
+                                <div class="tooltip-step-number">⚠️</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Armadilhas:</strong> Em tendências fortes, RSI pode ficar sobrecomprado/vendido por longos períodos (divergências). Não use isoladamente.
+                                    <strong>CUIDADO:</strong><br>
+                                    • O RSI sozinho NÃO garante nada! Combine sempre com outros indicadores<br>
+                                    • Em tendências muito fortes, o RSI pode ficar "travado" em níveis extremos por semanas<br>
+                                    • Não compre apenas porque está em 30, nem venda apenas porque está em 70
                                 </div>
                             </div>
                             <div class="tooltip-example">
-                                <strong>Exemplo Prático:</strong> ${ticker} tem RSI de <strong>${rsiValue !== null ? rsiValue : 'N/D'}</strong>. ${rsiInterpretation}
+                                <strong>🔍 SITUAÇÃO ATUAL DE ${ticker}:</strong><br>
+                                RSI está em <strong>${rsiValue !== null ? rsiValue.toFixed(1) : 'N/D'}</strong><br>
+                                <strong>Interpretação:</strong> ${rsiInterpretation}
                             </div>
                         `;
 
@@ -4036,48 +4044,54 @@
                         }
                         return `
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">1</div>
+                                <div class="tooltip-step-number">🎯</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Definição Técnica:</strong> MACD (Moving Average Convergence Divergence) é um indicador de tendência que mostra a relação entre duas médias móveis exponenciais.
+                                    <strong>O QUE É MACD?</strong><br>
+                                    Pense no MACD como um "detector de mudanças de direção". Ele te avisa quando a criptomoeda 
+                                    está prestes a mudar de direção (de subida para descida ou vice-versa).
+                                    <br><br>
+                                    É como ver dois carros correndo: quando o mais rápido ultrapassa o mais lento, 
+                                    você sabe que algo mudou!
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">2</div>
+                                <div class="tooltip-step-number">📊</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Componentes:</strong>
-                                    <ul>
-                                        <li><strong>Linha MACD:</strong> EMA12 - EMA26</li>
-                                        <li><strong>Linha de Sinal:</strong> EMA9 do MACD</li>
-                                        <li><strong>Histograma:</strong> MACD - Linha de Sinal</li>
+                                    <strong>COMO LER (SIMPLIFICADO):</strong>
+                                    <ul style="margin: 8px 0; padding-left: 20px;">
+                                        <li><strong>🟢 Cruzamento para CIMA:</strong> A linha rápida (azul) cruza a linha lenta (vermelha) subindo = SINAL DE COMPRA</li>
+                                        <li><strong>🔴 Cruzamento para BAIXO:</strong> A linha rápida cruza a linha lenta descendo = SINAL DE VENDA</li>
+                                        <li><strong>📈 Barras crescendo:</strong> Força da subida aumentando</li>
+                                        <li><strong>📉 Barras diminuindo:</strong> Força da descida aumentando</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">3</div>
+                                <div class="tooltip-step-number">💡</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Interpretação:</strong>
-                                    <ul>
-                                        <li><strong>MACD > Sinal:</strong> Tendência de alta</li>
-                                        <li><strong>MACD < Sinal:</strong> Tendência de baixa</li>
-                                        <li><strong>Histograma positivo:</strong> Momentum de alta</li>
-                                        <li><strong>Histograma negativo:</strong> Momentum de baixa</li>
-                                    </ul>
+                                    <strong>ANALOGIA SIMPLES:</strong><br>
+                                    Imagine que você está dirigindo e vê um carro acelerando atrás de você.
+                                    Quando ele te ultrapassa, você sabe que ele está mais rápido agora.
+                                    <br><br>
+                                    O MACD funciona igual: quando a linha rápida (MACD) ultrapassa a linha lenta (Sinal), 
+                                    significa que o momentum (velocidade) do preço mudou!
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">4</div>
+                                <div class="tooltip-step-number">⚠️</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Como usar neste painel:</strong> Cruzamentos do MACD acima/abaixo da linha de sinal indicam possíveis pontos de entrada/saída.
-                                </div>
-                            </div>
-                            <div class="tooltip-step">
-                                <div class="tooltip-step-number">5</div>
-                                <div class="tooltip-step-content">
-                                    <strong>Armadilhas:</strong> Pode gerar sinais falsos em mercados laterais. Use em conjunto com outros indicadores.
+                                    <strong>CUIDADO - SINAIS FALSOS:</strong><br>
+                                    • Em mercados "andando de lado" (sem tendência), o MACD dá muitos sinais falsos<br>
+                                    • Não opere APENAS com MACD! Combine com RSI e outros indicadores<br>
+                                    • Cruzamentos muito pequenos podem ser "ruído" do mercado<br>
+                                    • Espere confirmação de pelo menos 2-3 dias após o cruzamento
                                 </div>
                             </div>
                             <div class="tooltip-example">
-                                <strong>Exemplo Prático:</strong> ${macdInterpretation}
+                                <strong>🔍 SITUAÇÃO ATUAL DE ${ticker}:</strong><br>
+                                ${macdInterpretation}
+                                <br><br>
+                                <strong>🎓 EM RESUMO:</strong> Use o MACD para identificar "viradas" no mercado, mas sempre confirme com outros sinais!
                             </div>
                         `;
 
@@ -4092,48 +4106,62 @@
                         }
                         return `
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">1</div>
+                                <div class="tooltip-step-number">🎯</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Definição Técnica:</strong> Bandas de Bollinger são um indicador de volatilidade que consiste em uma média móvel central (20 períodos) com duas bandas superior e inferior calculadas com base no desvio padrão.
+                                    <strong>O QUE SÃO BANDAS DE BOLLINGER?</strong><br>
+                                    Imagine um "túnel elástico" ao redor do preço. Quando o preço toca o topo do túnel, 
+                                    pode estar "caro demais". Quando toca o fundo, pode estar "barato demais".
+                                    <br><br>
+                                    São 3 linhas: uma no MEIO (preço médio) e duas nas BORDAS (limites superior e inferior).
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">2</div>
+                                <div class="tooltip-step-number">📊</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Cálculo:</strong>
-                                    <ul>
-                                        <li><strong>Banda Média:</strong> SMA20 (Simple Moving Average)</li>
-                                        <li><strong>Banda Superior:</strong> SMA20 + (2 × Desvio Padrão)</li>
-                                        <li><strong>Banda Inferior:</strong> SMA20 - (2 × Desvio Padrão)</li>
+                                    <strong>COMO LER (BEM SIMPLES):</strong>
+                                    <ul style="margin: 8px 0; padding-left: 20px;">
+                                        <li><strong>🔴 Preço na BANDA SUPERIOR:</strong> Criptomoeda muito "cara" - pode cair logo</li>
+                                        <li><strong>🟢 Preço na BANDA INFERIOR:</strong> Criptomoeda muito "barata" - pode subir logo</li>
+                                        <li><strong>⚪ Preço no MEIO:</strong> Tudo normal, preço equilibrado</li>
+                                        <li><strong>📏 Bandas APERTADAS:</strong> Calma antes da tempestade - movimento forte vem aí!</li>
+                                        <li><strong>📐 Bandas LARGAS:</strong> Mercado muito agitado com grandes oscilações</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">3</div>
+                                <div class="tooltip-step-number">💡</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Interpretação:</strong>
-                                    <ul>
-                                        <li><strong>Bandas se expandem:</strong> Alta volatilidade</li>
-                                        <li><strong>Bandas se contraem:</strong> Baixa volatilidade (possível rompimento)</li>
-                                        <li><strong>Preço toca banda superior:</strong> Possível resistência</li>
-                                        <li><strong>Preço toca banda inferior:</strong> Possível suporte</li>
-                                    </ul>
+                                    <strong>ANALOGIA SIMPLES:</strong><br>
+                                    Pense em uma rodovia com 3 faixas. Carros normalmente andam na faixa do meio.
+                                    <br><br>
+                                    • Se um carro vai para a faixa da DIREITA (banda inferior), ele está muito devagar e logo vai acelerar<br>
+                                    • Se vai para a faixa da ESQUERDA (banda superior), está muito rápido e pode precisar frear
+                                    <br><br>
+                                    <strong>PARA ${ticker} AGORA:</strong><br>
+                                    ${bbData ? (
+                                        item.current_price > bbData.upper 
+                                        ? `${ticker} está ACIMA da banda superior (em $${item.current_price.toFixed(2)}). O preço subiu muito rápido e pode estar "caro demais". Considere aguardar uma correção ou vender se já tiver posição.`
+                                        : item.current_price < bbData.lower
+                                        ? `${ticker} está ABAIXO da banda inferior (em $${item.current_price.toFixed(2)}). O preço caiu muito e pode estar "barato demais". Pode ser uma oportunidade de compra se outros indicadores confirmarem.`
+                                        : `${ticker} está dentro das bandas (preço em $${item.current_price.toFixed(2)}). Comportamento normal, sem sinais extremos. Aguarde o preço tocar uma das bandas para ter um sinal mais claro.`
+                                    ) : 'Dados das Bandas de Bollinger não disponíveis.'}
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">4</div>
+                                <div class="tooltip-step-number">⚠️</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Como usar neste painel:</strong> Toques nas bandas combinados com outros indicadores (RSI, volume) podem indicar pontos de reversão.
-                                </div>
-                            </div>
-                            <div class="tooltip-step">
-                                <div class="tooltip-step-number">5</div>
-                                <div class="tooltip-step-content">
-                                    <strong>Armadilhas:</strong> Em tendências fortes, o preço pode "andar" nas bandas por longos períodos sem reversão.
+                                    <strong>PEGADINHAS IMPORTANTES:</strong><br>
+                                    • Em tendências MUITO fortes, o preço pode "andar colado" na banda por semanas<br>
+                                    • Não compre só porque tocou a banda inferior - pode cair mais ainda!<br>
+                                    • Bandas apertadas NÃO dizem a direção do movimento, só que um movimento forte vem<br>
+                                    • SEMPRE combine com RSI e outros indicadores
                                 </div>
                             </div>
                             <div class="tooltip-example">
-                                <strong>Exemplo Prático:</strong> ${bbInterpretation}
+                                <strong>🔍 SITUAÇÃO ATUAL DE ${ticker}:</strong><br>
+                                ${bbInterpretation}
+                                <br><br>
+                                <strong>🎓 EM RESUMO:</strong> Use as Bandas como "alertas" de preços extremos, mas confirme com outros sinais antes de operar!
                             </div>
                         `;
 
@@ -4151,43 +4179,52 @@
                         }
                         return `
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">1</div>
+                                <div class="tooltip-step-number">🎯</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Definição Técnica:</strong> ATR (Average True Range) mede a volatilidade média do ativo, considerando gaps entre períodos.
+                                    <strong>O QUE É ATR?</strong><br>
+                                    ATR é como um "medidor de agitação" da criptomoeda. Ele te diz o quanto o preço costuma 
+                                    oscilar (subir e descer) em um dia normal.
+                                    <br><br>
+                                    <strong>Pense assim:</strong> Se um carro balança muito (ATR alto), você precisa de mais espaço 
+                                    para manobrar. Se balança pouco (ATR baixo), pode fazer manobras mais apertadas.
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">2</div>
+                                <div class="tooltip-step-number">📊</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Cálculo (14 períodos):</strong> True Range = Máximo entre: (Alta - Baixa), |Alta - Fechamento anterior|, |Baixa - Fechamento anterior|. ATR = Média móvel simples dos True Ranges.
-                                </div>
-                            </div>
-                            <div class="tooltip-step">
-                                <div class="tooltip-step-number">3</div>
-                                <div class="tooltip-step-content">
-                                    <strong>Interpretação:</strong>
-                                    <ul>
-                                        <li><strong>ATR alto:</strong> Mercado volátil, maior risco</li>
-                                        <li><strong>ATR baixo:</strong> Mercado calmo, menor risco</li>
-                                        <li><strong>ATR crescente:</strong> Volatilidade aumentando</li>
-                                        <li><strong>ATR decrescente:</strong> Volatilidade diminuindo</li>
+                                    <strong>COMO LER:</strong>
+                                    <ul style="margin: 8px 0; padding-left: 20px;">
+                                        <li><strong>ATR ALTO (>5%):</strong> Criptomoeda "maluca" - sobe e desce muito. Maior risco mas também maior lucro potencial</li>
+                                        <li><strong>ATR MÉDIO (2-5%):</strong> Criptomoeda com movimento normal</li>
+                                        <li><strong>ATR BAIXO (<2%):</strong> Criptomoeda "calma" - pouco movimento. Menor risco mas também menos lucro</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">4</div>
+                                <div class="tooltip-step-number">💡</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Como usar neste painel:</strong> Use para definir stop loss dinâmico baseado na volatilidade atual. Stop Loss = Preço atual ± (Multiplicador × ATR).
+                                    <strong>PARA QUE SERVE?</strong><br>
+                                    O ATR é ESSENCIAL para calcular seu <strong>Stop Loss</strong> (ponto onde você sai no prejuízo para não perder mais).
+                                    <br><br>
+                                    • <strong>Se ATR é alto:</strong> Coloque stop loss mais longe (senão vai ser acionado por oscilação normal)<br>
+                                    • <strong>Se ATR é baixo:</strong> Pode colocar stop loss mais perto (criptomoeda oscila pouco)
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">5</div>
+                                <div class="tooltip-step-number">⚠️</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Armadilhas:</strong> ATR não indica direção, apenas volatilidade. Não use isoladamente para tomar decisões de entrada/saída.
+                                    <strong>IMPORTANTE SABER:</strong><br>
+                                    • ATR NÃO diz se vai subir ou descer, só o quanto costuma oscilar<br>
+                                    • ATR alto = mais risco mas também mais oportunidade de lucro<br>
+                                    • Nunca use ATR sozinho para decidir comprar ou vender<br>
+                                    • Use ATR principalmente para gerenciar risco (stop loss)
                                 </div>
                             </div>
                             <div class="tooltip-example">
-                                <strong>Exemplo Prático:</strong> ${atrAdvice} para ${ticker}.
+                                <strong>🔍 SITUAÇÃO DE ${ticker}:</strong><br>
+                                ${atr && atr.percent ? `ATR de ${atr.percent.toFixed(2)}% - ${atrAdvice}` : 'Dados de ATR não disponíveis'}
+                                <br><br>
+                                <strong>🎓 EM RESUMO:</strong> Use o ATR para saber "quanto ${ticker} se mexe" e ajustar seus stop loss de acordo!
                             </div>
                         `;
 
