@@ -6,206 +6,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        /* ===========================
-           1. RESET & BASE STYLES
-           =========================== */
-        
-        /* ===========================
-           2. VARIABLES & THEME
-           =========================== */
+        /* ESTILOS EXISTENTES MANTIDOS EXATAMENTE COMO ESTAVAM */
         :root {
-            /* Cores principais - Paleta Moderna */
-            --bg-gradient-start: #0f172a;
-            --bg-gradient-end: #1e293b;
-            --surface: rgba(255, 255, 255, 0.05);
-            --surface-hover: rgba(255, 255, 255, 0.08);
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --secondary: #8b5cf6;
-            --accent: #06b6d4;
-            
-            /* Glassmorphism */
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            
-            /* Status colors */
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #06b6d4;
-            
-            /* Compatibilidade com código existente */
-            --bg-body: #0f172a;
-            --bg-card: rgba(255, 255, 255, 0.05);
-            --bg-card-alt: rgba(255, 255, 255, 0.03);
-            --border-card: rgba(255, 255, 255, 0.1);
-            --border-soft: rgba(255, 255, 255, 0.05);
-            --text-main: #f8fafc;
-            --text-muted: #cbd5e1;
-            --accent-soft: rgba(59, 130, 246, 0.12);
-            --accent-strong: #3b82f6;
-            --positive: #10b981;
-            --negative: #ef4444;
+            --bg-body: #f5f7fa;
+            --bg-card: #ffffff;
+            --bg-card-alt: #f7f9fc;
+            --border-card: #e2e8f0;
+            --border-soft: #e5ecf5;
+            --text-main: #1e2733;
+            --text-muted: #6b7280;
+            --accent: #3861fb;
+            --accent-soft: rgba(56, 97, 251, 0.08);
+            --accent-strong: #1b44d1;
+            --positive: #16a34a;
+            --negative: #dc2626;
             --neutral: #f59e0b;
-            --resistance: #ef4444;
-            --support: #10b981;
-            --sr-support-weak: rgba(16, 185, 129, 0.5);
-            --sr-resistance-weak: rgba(239, 68, 68, 0.5);
+            --resistance: #dc2626;
+            --support: #16a34a;
+            --sr-support-weak: rgba(22, 163, 74, 0.5);
+            --sr-resistance-weak: rgba(220, 38, 38, 0.5);
 
-            --score-high: #10b981;
+            --score-high: #16a34a;
             --score-mid: #f97316;
-            --score-low: #ef4444;
+            --score-low: #dc2626;
 
-            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --shadow-soft: 0 10px 30px rgba(15,23,42,0.08);
             
-            /* Cards de Compra */
+            /* NOVAS VARIÁVEIS PARA CARDS DE COMPRA */
             --card-buy-perfect: #10b981;
             --card-buy-near: #fbbf24;
-            --card-buy-perfect-bg: rgba(16, 185, 129, 0.12);
-            --card-buy-near-bg: rgba(251, 191, 36, 0.12);
-            --card-buy-perfect-border: rgba(16, 185, 129, 0.4);
-            --card-buy-near-border: rgba(251, 191, 36, 0.4);
+            --card-buy-perfect-bg: rgba(16, 185, 129, 0.08);
+            --card-buy-near-bg: rgba(251, 191, 36, 0.08);
+            --card-buy-perfect-border: rgba(16, 185, 129, 0.3);
+            --card-buy-near-border: rgba(251, 191, 36, 0.3);
         }
 
-        /* ===========================
-           3. LAYOUT & GRID
-           =========================== */
-        
         * {
             box-sizing: border-box;
             font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            margin: 0;
-            padding: 0;
         }
 
         body {
             margin: 0;
-            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-            background-attachment: fixed;
+            background: var(--bg-body);
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            padding: 20px 10px;
-            min-height: 100vh;
-        }
-
-        /* ===========================
-           4. COMPONENTS - HEADER
-           =========================== */
-        
-        .modern-header {
-            position: relative;
-            padding: 30px 20px;
-            margin-bottom: 30px;
-            border-radius: 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            overflow: hidden;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .header-gradient {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-            pointer-events: none;
-            z-index: 0;
+            padding: 10px;
         }
 
         h1 {
-            position: relative;
-            margin: 0 0 10px;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 800;
+            margin: 8px 0 4px;
+            font-size: 1.3rem;
+            font-weight: 700;
             text-align: center;
             color: var(--text-main);
-            z-index: 1;
-            text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
-            letter-spacing: -0.5px;
         }
 
-        .subtitle-glow {
-            position: relative;
+        .subtitle {
             text-align: center;
-            font-size: clamp(0.85rem, 2vw, 1rem);
+            font-size: 0.78rem;
             color: var(--text-muted);
-            margin: 0;
-            z-index: 1;
-            font-weight: 500;
+            margin-bottom: 10px;
         }
 
-        /* Tabela de Alertas Disparados - MODERNIZADO */
-        #triggered-alerts-panel {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(249, 115, 22, 0.2));
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        .disclaimer {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-card);
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 10px;
+        }
+
+        .disclaimer strong {
             color: var(--text-main);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 2px solid rgba(245, 158, 11, 0.5);
-            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.3);
-            animation: fadeInUp 0.5s ease-out backwards;
-            animation-delay: 0.15s;
+        }
+
+        /* Tabela de Alertas Disparados - MODIFICADO PARA SUPORTAR DUAS CORES */
+        #triggered-alerts-panel {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #f97316;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
         }
 
         #triggered-alerts-panel.active-alerts {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(34, 197, 94, 0.2));
-            border: 2px solid rgba(16, 185, 129, 0.5);
-            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            border: 2px solid #22c55e;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
         }
 
         .triggered-alerts-table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 0.85rem;
+            border-collapse: collapse;
+            font-size: 0.75rem;
         }
 
         .triggered-alerts-table th {
             text-align: left;
-            padding: 12px 10px;
-            border-bottom: 2px solid rgba(255,255,255,0.3);
-            font-weight: 700;
-            background: rgba(255, 255, 255, 0.05);
-            font-size: 0.9rem;
-        }
-        
-        .triggered-alerts-table th:first-child {
-            border-top-left-radius: 10px;
-        }
-        
-        .triggered-alerts-table th:last-child {
-            border-top-right-radius: 10px;
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            font-weight: 600;
         }
 
         .triggered-alerts-table td {
-            padding: 12px 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            transition: all 0.2s;
-        }
-        
-        .triggered-alerts-table tbody tr:hover {
-            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
 
         .triggered-alerts-table tr:last-child td {
             border-bottom: none;
-        }
-        
-        .triggered-alerts-table tr:last-child td:first-child {
-            border-bottom-left-radius: 10px;
-        }
-        
-        .triggered-alerts-table tr:last-child td:last-child {
-            border-bottom-right-radius: 10px;
         }
 
         /* Performance Dashboard */
@@ -225,19 +140,13 @@
             border-radius: 6px;
         }
 
-        /* Níveis Fibonacci - MODERNIZADOS */
+        /* Níveis Fibonacci */
         .fibonacci-levels {
-            margin-top: 16px;
-            padding: 16px;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .fibonacci-levels:hover {
-            border-color: var(--primary);
+            margin-top: 8px;
+            padding: 8px;
+            background: var(--bg-card-alt);
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
         }
 
         .fib-grid {
@@ -251,16 +160,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 10px;
-            border-radius: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
         }
 
         .fib-level:hover {
-            background: var(--surface-hover);
-            border-color: var(--primary);
-            transform: translateX(3px);
+            background-color: var(--accent-soft);
         }
 
         .fib-percent {
@@ -277,63 +183,27 @@
             flex-wrap: wrap;
         }
 
-        /* ===========================
-           4. COMPONENTS - BUTTONS
-           =========================== */
-        
         .top-bar button {
             border: none;
             border-radius: 999px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            padding: 6px 12px;
+            background: var(--accent);
             color: #ffffff;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .top-bar button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .top-bar button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.5);
-        }
-
-        .top-bar button:active {
-            transform: translateY(0);
-        }
-
-        .top-bar button:active::before {
-            width: 300px;
-            height: 300px;
+            box-shadow: 0 6px 16px rgba(56,97,251,0.25);
         }
 
         .top-bar button.secondary {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
             color: var(--text-main);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border-card);
             box-shadow: none;
         }
 
-        .top-bar button.secondary:hover {
-            background: var(--surface-hover);
-            border-color: rgba(59, 130, 246, 0.3);
+        .top-bar button:active {
+            transform: translateY(1px);
         }
 
         #auto-refresh-status {
@@ -346,33 +216,21 @@
             color: var(--accent-strong);
         }
 
-        /* ===========================
-           4. COMPONENTS - INPUTS
-           =========================== */
-        
         .search-input {
             width: 100%;
-            padding: 12px 20px;
+            padding: 7px 12px;
             border-radius: 999px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-card);
+            background: #ffffff;
             color: var(--text-main);
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .search-input::placeholder {
-            color: var(--text-muted);
-            opacity: 0.7;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
         }
 
         .search-input:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-            background: var(--surface-hover);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(56,97,251,0.25);
         }
 
         .filter-group {
@@ -386,33 +244,23 @@
         .filter-group label {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
+            gap: 4px;
+            padding: 4px 10px;
             border-radius: 999px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-card);
+            background: var(--bg-card);
             color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 500;
-        }
-        
-        .filter-group label:hover {
-            background: var(--surface-hover);
-            border-color: var(--primary);
         }
 
         .filter-group input[type="radio"] {
-            accent-color: var(--primary);
+            accent-color: var(--accent);
         }
 
         .filter-group label.active {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
-            color: var(--text-main);
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            font-weight: 600;
         }
 
         /* NOVOS ESTILOS PARA FILTROS COLORIDOS POR FASE WYCKOFF */
@@ -450,41 +298,24 @@
             margin-top: 6px;
         }
 
-        /* ===========================
-           4. COMPONENTS - CARDS
-           =========================== */
-        
+        /* MODIFICAÇÃO: Cards iniciam recolhidos */
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 16px;
-            padding: 16px;
-            box-shadow: var(--glass-shadow);
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-card);
+            margin-bottom: 10px;
+            padding: 10px;
+            box-shadow: var(--shadow-soft);
             position: relative;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             overflow: hidden;
-            max-height: 100px;
-            animation: fadeInUp 0.4s ease-out backwards;
-        }
-
-        .card:hover {
-            transform: scale(1.01);
-            border-color: rgba(59, 130, 246, 0.3);
-            box-shadow: 0 12px 40px 0 rgba(59, 130, 246, 0.25);
+            max-height: 80px; /* Altura inicial reduzida */
         }
 
         .card.expanded {
-            max-height: none;
+            max-height: none; /* Remove limite quando expandido */
             cursor: default;
-            animation: scaleIn 0.3s ease-out;
-        }
-        
-        .card.expanded:hover {
-            transform: none;
         }
         
         /* NOVOS ESTILOS PARA CARDS COM INDICAÇÃO DE COMPRA */
@@ -572,22 +403,14 @@
         }
 
         .badge {
-            font-size: 0.75rem;
-            padding: 4px 12px;
+            font-size: 0.7rem;
+            padding: 2px 8px;
             border-radius: 999px;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            color: var(--primary);
+            background: var(--accent-soft);
+            border: 1px solid rgba(56,97,251,0.3);
+            color: var(--accent-strong);
             white-space: nowrap;
-            margin-top: 6px;
-            font-weight: 600;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .badge:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            margin-top: 4px;
         }
 
         .price-container {
@@ -686,28 +509,14 @@
         .sr-resistance-weak { color: var(--sr-resistance-weak); font-weight: 600; }
 
         .score-badge {
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.75rem;
             color: #ffffff;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        .score-badge:hover {
-            transform: scale(1.1);
-        }
-        
-        .score-high { 
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-        .score-mid  { 
-            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
-        }
-        .score-low  { 
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
-        }
+        .score-high { background: var(--score-high); }
+        .score-mid  { background: var(--score-mid); }
+        .score-low  { background: var(--score-low); }
 
         .sparkline-wrapper {
             width: 40%;
@@ -765,44 +574,27 @@
         }
         
         .alert-trade-section {
-            margin-top: 16px;
-            padding: 16px;
-            border-radius: 12px;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            border: 2px dashed var(--glass-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .alert-trade-section:hover {
-            border-color: var(--primary);
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            background: var(--bg-card-alt);
+            border: 1px dashed var(--border-soft);
         }
 
-        /* ===========================
-           4. COMPONENTS - DASHBOARDS
-           =========================== */
-        
         .ranking-dashboard {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 16px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            font-size: 0.85rem;
-            animation: fadeInUp 0.5s ease-out backwards;
-            animation-delay: 0.2s;
+            margin-top: 14px;
+            padding: 10px;
+            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            box-shadow: var(--shadow-soft);
+            font-size: 0.75rem;
         }
 
         .ranking-dashboard h3 {
-            margin: 0 0 15px;
-            font-size: 1.1rem;
+            margin: 0 0 4px;
+            font-size: 0.85rem;
             color: var(--text-main);
-            font-weight: 700;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
         }
 
         .ranking-filters {
@@ -819,52 +611,33 @@
         }
 
         .ranking-card {
-            padding: 16px;
-            border-radius: 12px;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .ranking-card:hover {
-            background: var(--surface-hover);
-            border-color: rgba(59, 130, 246, 0.3);
+            padding: 6px;
+            border-radius: 8px;
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-soft);
         }
 
         .ranking-card h4 {
-            margin: 0 0 12px;
-            font-size: 0.95rem;
+            margin: 0 0 4px;
+            font-size: 0.78rem;
             color: var(--text-main);
-            font-weight: 600;
         }
 
         .ranking-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 2px;
             cursor: pointer;
-            padding: 8px 10px;
-            border-radius: 8px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
-        }
-        
-        .ranking-item:hover {
-            background: var(--surface-hover);
-            border-color: var(--primary);
-            transform: translateX(3px);
         }
 
         .ranking-item span:last-child {
-            font-weight: 700;
+            font-weight: 600;
         }
 
         .alert-trade-section h4 {
-            margin: 0 0 12px;
-            font-size: 0.95rem;
-            color: var(--primary);
-            font-weight: 700;
+            margin: 0 0 6px;
+            font-size: 0.8rem;
+            color: var(--accent-strong);
         }
 
         .trade-buttons {
@@ -875,98 +648,48 @@
 
         .trade-buttons button {
             flex-grow: 1;
-            padding: 12px;
+            padding: 8px;
             border: none;
-            border-radius: 10px;
+            border-radius: 6px;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .trade-buttons button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .trade-buttons button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s;
         }
 
         .trade-buttons button:active {
-            transform: translateY(0);
-        }
-        
-        .trade-buttons button:active::before {
-            width: 300px;
-            height: 300px;
+            transform: scale(0.98);
         }
 
         .trade-buttons .btn-buy {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            background-color: var(--positive);
             color: #ffffff;
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
         }
 
         .trade-buttons .btn-sell {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            background-color: var(--negative);
             color: #ffffff;
-            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
         }
 
         .trade-form input, .trade-form select {
             width: 100%;
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            color: var(--text-main);
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .trade-form input::placeholder {
-            color: var(--text-muted);
-            opacity: 0.7;
-        }
-        
-        .trade-form input:focus, .trade-form select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-            background: var(--surface-hover);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-card);
+            margin-bottom: 6px;
+            font-size: 0.75rem;
         }
 
         .trade-form button {
             width: 100%;
-            padding: 12px;
+            padding: 6px;
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            border-radius: 6px;
+            background: var(--accent);
             color: #ffffff;
-            font-weight: 700;
-            font-size: 0.85rem;
+            font-weight: 600;
+            font-size: 0.75rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
-        }
-        
-        .trade-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.5);
         }
 
         .active-alerts-list, .trade-history-list {
@@ -1029,25 +752,18 @@
             max-width: 90%;
         }
 
-        /* ===========================
-           4. COMPONENTS - TOASTS & MODALS
-           =========================== */
-        
         .toast {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: var(--text-main);
-            border-radius: 12px;
-            padding: 12px 20px;
-            margin-top: 8px;
-            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
-            border: 1px solid var(--glass-border);
+            background-color: #111827;
+            color: #f9fafb;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-top: 6px;
+            box-shadow: 0 8px 24px rgba(15,23,42,0.4);
+            border: 1px solid #1f2937;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.85rem;
-            font-weight: 500;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            font-size: 0.75rem;
         }
 
         .toast.show {
@@ -1133,25 +849,20 @@
         }
 
         #dashboard-highlights {
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 16px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            animation: fadeInUp 0.5s ease-out backwards;
-            animation-delay: 0.3s;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            box-shadow: var(--shadow-soft);
         }
 
         #dashboard-highlights h3 {
-            margin: 0 0 15px;
-            font-size: 1.1rem;
+            margin: 0 0 8px;
+            font-size: 0.85rem;
             color: var(--text-main);
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-            font-weight: 700;
+            border-bottom: 1px solid var(--border-soft);
+            padding-bottom: 4px;
         }
 
         .highlight-grid {
@@ -1161,40 +872,23 @@
         }
 
         .highlight-card {
-            font-size: 0.85rem;
-            padding: 16px;
-            border-radius: 12px;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .highlight-card:hover {
-            background: var(--surface-hover);
-            border-color: rgba(59, 130, 246, 0.3);
+            font-size: 0.75rem;
+            padding: 6px;
+            border-radius: 8px;
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-soft);
         }
 
         .highlight-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 2px;
             cursor: pointer;
             position: relative;
-            padding: 8px 10px;
-            border-radius: 8px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
-        }
-        
-        .highlight-item:hover {
-            background: var(--surface-hover);
-            border-color: var(--primary);
-            transform: translateX(3px);
         }
 
         .highlight-item span:last-child {
-            font-weight: 700;
+            font-weight: 600;
         }
 
         .highlight-item .positive { color: var(--positive); }
@@ -1210,34 +904,23 @@
             gap: 8px;
         }
 
-        /* ===========================
-           4. COMPONENTS - SCROLL BUTTONS
-           =========================== */
-        
         .scroll-button {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background-color: var(--accent);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(56, 97, 251, 0.4);
+            transition: background-color 0.2s;
         }
 
         .scroll-button:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
-        }
-
-        .scroll-button:active {
-            transform: translateY(0) scale(1);
+            background-color: var(--accent-strong);
         }
         
         .token-result-item {
@@ -1289,16 +972,12 @@
         }
 
         .modal {
-            background: var(--glass-bg);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 450px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 400px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--glass-border);
-            animation: scaleIn 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .modal h3 {
@@ -1320,33 +999,22 @@
         }
 
         .modal-buttons button {
-            padding: 12px 24px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.9rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .modal-buttons button:hover {
-            transform: translateY(-2px);
         }
 
         .modal-cancel {
-            background: var(--surface);
+            background: var(--bg-card-alt);
             color: var(--text-main);
-            border: 1px solid var(--glass-border);
-        }
-        
-        .modal-cancel:hover {
-            background: var(--surface-hover);
         }
 
         .modal-confirm {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            background: var(--negative);
             color: white;
-            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
         }
 
         .trade-input-group {
@@ -1445,64 +1113,18 @@
         }
 
         .loading-spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--glass-border);
-            border-top: 3px solid var(--primary);
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-soft);
+            border-top: 2px solid var(--accent);
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 10px;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        /* ===========================
-           5. ANIMATIONS
-           =========================== */
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes glow {
-            0%, 100% {
-                text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
-            }
         }
 
         .tooltip-icon {
@@ -1553,59 +1175,35 @@
             font-size: 0.75rem;
         }
 
-        /* Estilos para a nova tabela Top 15 - MODERNIZADOS */
+        /* Estilos para a nova tabela Top 15 */
         .top15-table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 0.8rem;
-            margin-top: 10px;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            margin-top: 6px;
         }
 
         .top15-table th {
             text-align: left;
-            padding: 12px 10px;
-            border-bottom: 2px solid var(--primary);
-            font-weight: 700;
-            color: var(--text-main);
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-            font-size: 0.85rem;
-        }
-        
-        .top15-table th:first-child {
-            border-top-left-radius: 10px;
-        }
-        
-        .top15-table th:last-child {
-            border-top-right-radius: 10px;
+            padding: 4px 6px;
+            border-bottom: 1px solid var(--border-soft);
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--bg-card-alt);
         }
 
         .top15-table td {
-            padding: 12px 10px;
-            border-bottom: 1px solid var(--glass-border);
+            padding: 4px 6px;
+            border-bottom: 1px solid var(--border-soft);
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .top15-table tr:last-child td {
             border-bottom: none;
         }
-        
-        .top15-table tr:last-child td:first-child {
-            border-bottom-left-radius: 10px;
-        }
-        
-        .top15-table tr:last-child td:last-child {
-            border-bottom-right-radius: 10px;
-        }
 
-        .top15-table tbody tr:hover {
-            background: var(--surface-hover);
-        }
-        
-        .top15-table tbody tr:hover td {
-            color: var(--text-main);
+        .top15-table tr:hover {
+            background: var(--accent-soft);
         }
 
         .top15-score {
@@ -1663,90 +1261,55 @@
             padding: 4px 0;
         }
 
-        /* NOVO ESTILO PARA SINAIS WYCKOFF - MODERNIZADO */
+        /* NOVO ESTILO PARA SINAIS WYCKOFF */
         .wyckoff-signal-badge {
-            font-size: 0.7rem;
-            padding: 4px 10px;
+            font-size: 0.65rem;
+            padding: 2px 6px;
             border-radius: 999px;
-            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+            background: var(--neutral);
             color: white;
-            font-weight: 700;
-            margin-left: 6px;
+            font-weight: 600;
+            margin-left: 4px;
             white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .wyckoff-signal-badge:hover {
-            transform: scale(1.05);
         }
 
-        .wyckoff-signal-badge.sc { 
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
-        }
-        .wyckoff-signal-badge.ar { 
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-        .wyckoff-signal-badge.spring { 
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-        .wyckoff-signal-badge.utad { 
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
-        }
-        .wyckoff-signal-badge.sos { 
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-        .wyckoff-signal-badge.lpsy { 
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
-        }
+        .wyckoff-signal-badge.sc { background: var(--negative); }
+        .wyckoff-signal-badge.ar { background: var(--positive); }
+        .wyckoff-signal-badge.spring { background: var(--positive); }
+        .wyckoff-signal-badge.utad { background: var(--negative); }
+        .wyckoff-signal-badge.sos { background: var(--positive); }
+        .wyckoff-signal-badge.lpsy { background: var(--negative); }
 
         .wyckoff-score-badge {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 600;
             color: white;
-            margin-left: 6px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .wyckoff-score-badge:hover {
-            transform: scale(1.05);
+            margin-left: 4px;
         }
 
-        .wyckoff-score-high { 
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-        .wyckoff-score-mid { 
-            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
-        }
-        .wyckoff-score-low { 
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
-        }
+        .wyckoff-score-high { background: var(--positive); }
+        .wyckoff-score-mid { background: var(--neutral); }
+        .wyckoff-score-low { background: var(--negative); }
 
         /* NOVO: LEGENDA WYCKOFF */
         .wyckoff-legend {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            font-size: 0.85rem;
-            animation: fadeInUp 0.5s ease-out backwards;
-            animation-delay: 0.1s;
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-card);
+            box-shadow: var(--shadow-soft);
+            font-size: 0.75rem;
         }
 
         .wyckoff-legend h3 {
-            margin: 0 0 15px;
-            font-size: 1.1rem;
+            margin: 0 0 8px;
+            font-size: 0.85rem;
             color: var(--text-main);
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-            font-weight: 700;
+            border-bottom: 1px solid var(--border-soft);
+            padding-bottom: 4px;
         }
 
         .wyckoff-legend-grid {
@@ -1758,19 +1321,16 @@
         .wyckoff-legend-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            background: var(--surface);
+            gap: 6px;
+            padding: 4px 6px;
+            border-radius: 6px;
+            background: var(--bg-card-alt);
             cursor: help;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
+            transition: background-color 0.2s;
         }
 
         .wyckoff-legend-item:hover {
-            background: var(--surface-hover);
-            border-color: var(--primary);
-            transform: translateX(5px);
+            background-color: var(--accent-soft);
         }
 
         .wyckoff-legend-color {
@@ -1783,31 +1343,19 @@
         .wyckoff-legend-color.dist { background: var(--negative); }
         .wyckoff-legend-color.neutro { background: var(--neutral); }
 
-        /* NOVO: SCORE DE CONFLUÊNCIA TÉCNICA - MODERNIZADO */
+        /* NOVO: SCORE DE CONFLUÊNCIA TÉCNICA */
         .confluence-score-badge {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 600;
             color: white;
-            margin-left: 6px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .confluence-score-badge:hover {
-            transform: scale(1.05);
+            margin-left: 4px;
         }
 
-        .confluence-score-high { 
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-        .confluence-score-medium { 
-            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
-        }
-        .confluence-score-low { 
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
-        }
+        .confluence-score-high { background: var(--positive); }
+        .confluence-score-medium { background: var(--neutral); }
+        .confluence-score-low { background: var(--negative); }
 
         /* NOVO: BOTÃO DE AÇÃO RÁPIDA NA TABELA DE ALERTAS */
         .alert-action-btn {
@@ -1822,78 +1370,35 @@
             white-space: nowrap;
         }
 
-        /* ===========================
-           6. RESPONSIVE - MOBILE FIRST
-           =========================== */
-        
-        /* Mobile: < 640px (base styles already mobile-first) */
-        
-        /* Tablet: 640px - 1024px */
-        @media (min-width: 640px) {
+        @media (min-width: 768px) {
             body {
-                padding: 30px 20px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .card {
-                padding: 20px;
-                max-height: 120px;
-            }
-            
-            .highlight-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-        
-        /* Desktop: > 1024px */
-        @media (min-width: 1024px) {
-            body {
-                max-width: 1200px;
+                max-width: 650px;
                 margin: 0 auto;
-                padding: 40px 30px;
             }
-            
-            .modern-header {
-                padding: 40px 30px;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
             .highlight-grid {
                 grid-template-columns: repeat(4, minmax(0, 1fr));
             }
-            
             .wyckoff-legend-grid {
                 grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .card:hover {
-                transform: scale(1.02);
-            }
-        }
-        
-        /* Large Desktop: > 1440px */
-        @media (min-width: 1440px) {
-            body {
-                max-width: 1400px;
             }
         }
     </style>
 </head>
 <body>
-    <header class="modern-header">
-        <div class="header-gradient"></div>
-        <h1>🚀 Painel Profissional Cripto</h1>
-        <p class="subtitle-glow">Análise Wyckoff/Fibonacci em Tempo Real com Indicadores Técnicos Avançados</p>
-        <p id="last-update" style="font-size:0.8rem; margin-top:10px; color:var(--text-muted); text-align:center; position:relative; z-index:1;">
+    <h1>Relatório Dinâmico – Wyckoff/Fibonacci (Versão Profissional)</h1>
+    <div class="subtitle">
+        Indicadores profissionais: RSI real, MACD, Bandas de Bollinger + Alerta automático de 100% de lucro
+    </div>
+
+    <div class="disclaimer">
+        <p style="margin:0 0 4px;">
+            Este painel é **exclusivamente educacional** e **não é uma corretora real**. Os registros de compra/venda são **SIMULADOS**.
+            Não constitui, em hipótese alguma, recomendação de compra ou venda de ativos.
+        </p>
+        <p id="last-update" style="font-size:0.74rem; margin:0; color:var(--text-muted);">
             Última atualização: carregando...
         </p>
-    </header>
+    </div>
 
     <!-- NOVO: Legenda Wyckoff -->
     <div class="wyckoff-legend">
