@@ -31,13 +31,6 @@
             --score-low: #dc2626;
 
             --shadow-soft: 0 10px 30px rgba(15,23,42,0.08);
-            --shadow-hover: 0 15px 40px rgba(15,23,42,0.12);
-            --shadow-glassmorphism: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            
-            /* Transições suaves */
-            --transition-fast: 0.2s ease;
-            --transition-normal: 0.3s ease;
-            --transition-slow: 0.5s ease;
             
             /* NOVAS VARIÁVEIS PARA CARDS DE COMPRA */
             --card-buy-perfect: #10b981;
@@ -315,14 +308,9 @@
             box-shadow: var(--shadow-soft);
             position: relative;
             cursor: pointer;
-            transition: all var(--transition-normal), box-shadow var(--transition-fast), transform var(--transition-fast);
+            transition: all 0.3s ease;
             overflow: hidden;
             max-height: 80px; /* Altura inicial reduzida */
-        }
-        
-        .card:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
         }
 
         .card.expanded {
@@ -1382,121 +1370,6 @@
             white-space: nowrap;
         }
 
-        /* Skeleton Loaders */
-        .skeleton {
-            background: linear-gradient(90deg, var(--bg-card-alt) 25%, var(--border-soft) 50%, var(--bg-card-alt) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 4px;
-        }
-        
-        @keyframes shimmer {
-            0% {
-                background-position: 200% 0;
-            }
-            100% {
-                background-position: -200% 0;
-            }
-        }
-        
-        .skeleton-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-card);
-            margin-bottom: 10px;
-            padding: 10px;
-            box-shadow: var(--shadow-soft);
-        }
-        
-        .skeleton-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        
-        .skeleton-title {
-            width: 120px;
-            height: 24px;
-            margin-bottom: 6px;
-        }
-        
-        .skeleton-subtitle {
-            width: 80px;
-            height: 16px;
-        }
-        
-        .skeleton-price {
-            width: 100px;
-            height: 24px;
-        }
-        
-        .skeleton-line {
-            width: 100%;
-            height: 12px;
-            margin-bottom: 6px;
-        }
-        
-        /* Loading spinner melhorado */
-        .loading-spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid var(--border-soft);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            margin-right: 8px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Micro-interações em botões */
-        button {
-            transition: all var(--transition-fast);
-        }
-        
-        button:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(56, 97, 251, 0.3);
-        }
-        
-        button:active:not(:disabled) {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(56, 97, 251, 0.2);
-        }
-        
-        /* Transições suaves entre estados */
-        .card-details {
-            transition: opacity var(--transition-normal), max-height var(--transition-normal);
-        }
-        
-        .card:not(.expanded) .card-details {
-            opacity: 0;
-        }
-        
-        .card.expanded .card-details {
-            opacity: 1;
-        }
-        
-        /* Glassmorphism para cards especiais */
-        .card.buy-perfect,
-        .card.buy-near {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        
-        /* Tooltips melhorados */
-        [title] {
-            position: relative;
-        }
-        
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
         @media (min-width: 768px) {
             body {
                 max-width: 650px;
@@ -1958,48 +1831,26 @@
         // --- FUNÇÕES DE CÁLCULO E FORMATAÇÃO ---
 
         // ===== RSI REAL PROFISSIONAL =====
-        // ===== RSI REAL MELHORADO - FUNCIONA COM HISTÓRICOS CURTOS =====
         function calculateRealRSI(prices, period = 14) {
-            if (!prices || prices.length < 2) {
+            if (!prices || prices.length < period + 1) {
                 return { text: 'N/D', class: '', value: 50 };
             }
             
-            // Ajustar período adaptativo para históricos curtos
-            const effectivePeriod = Math.min(period, Math.floor(prices.length / 2));
+            let gains = 0;
+            let losses = 0;
             
-            // Mínimo de 7 períodos para cálculo significativo
-            if (effectivePeriod < 7) {
-                return { text: 'N/D', class: '', value: 50 };
+            // Calcular ganhos e perdas iniciais
+            for (let i = 1; i <= period; i++) {
+                const change = prices[prices.length - i] - prices[prices.length - i - 1];
+                if (change > 0) {
+                    gains += change;
+                } else {
+                    losses -= change;
+                }
             }
             
-            // Calcular mudanças de preço
-            const changes = [];
-            for (let i = 1; i < prices.length; i++) {
-                changes.push(prices[i] - prices[i - 1]);
-            }
-            
-            // Separar ganhos e perdas
-            const gains = changes.map(c => c > 0 ? c : 0);
-            const losses = changes.map(c => c < 0 ? -c : 0);
-            
-            // Usar EMA (Exponential Moving Average) em vez de SMA para melhor resposta
-            let avgGain = 0;
-            let avgLoss = 0;
-            
-            // Calcular primeira média simples
-            for (let i = 0; i < effectivePeriod; i++) {
-                avgGain += gains[i];
-                avgLoss += losses[i];
-            }
-            avgGain /= effectivePeriod;
-            avgLoss /= effectivePeriod;
-            
-            // Aplicar suavização exponencial para os demais valores
-            const smoothingFactor = 1 / effectivePeriod;
-            for (let i = effectivePeriod; i < gains.length; i++) {
-                avgGain = (gains[i] * smoothingFactor) + (avgGain * (1 - smoothingFactor));
-                avgLoss = (losses[i] * smoothingFactor) + (avgLoss * (1 - smoothingFactor));
-            }
+            let avgGain = gains / period;
+            let avgLoss = losses / period;
             
             // Calcular RSI usando a fórmula padrão
             if (avgLoss === 0) return { text: '100', class: 'rsi-high', value: 100 };
@@ -2008,112 +1859,39 @@
             const rs = avgGain / avgLoss;
             const rsi = 100 - (100 / (1 + rs));
             
-            // Ajuste de peso para períodos curtos (adicionar leve fator de correção)
-            const weightAdjustment = effectivePeriod < period ? Math.min(1, effectivePeriod / period) : 1;
-            const adjustedRsi = rsi * weightAdjustment + (50 * (1 - weightAdjustment));
-            
             let className = '';
-            if (adjustedRsi >= 70) className = 'rsi-high';
-            else if (adjustedRsi <= 30) className = 'rsi-low';
+            if (rsi >= 70) className = 'rsi-high';
+            else if (rsi <= 30) className = 'rsi-low';
             
-            return { 
-                text: adjustedRsi.toFixed(0), 
-                class: className, 
-                value: adjustedRsi,
-                effectivePeriod: effectivePeriod // Adicionar para debug
-            };
+            return { text: rsi.toFixed(0), class: className, value: rsi };
         }
 
-        // ===== MACD PROFISSIONAL MELHORADO - FUNCIONA COM DADOS CURTOS =====
+        // ===== MACD PROFISSIONAL CORRIGIDO =====
         function calculateMACD(prices) {
-            if (!prices || prices.length < 12) {
-                return { macd: 0, signal: 0, histogram: 0, text: 'N/D', divergence: null };
+            if (!prices || prices.length < 26) {
+                return { macd: 0, signal: 0, histogram: 0, text: 'N/D' };
             }
             
-            // Ajustar períodos para dados curtos
-            const fastPeriod = Math.min(12, Math.max(5, Math.floor(prices.length * 0.4)));
-            const slowPeriod = Math.min(26, Math.max(10, Math.floor(prices.length * 0.7)));
-            const signalPeriod = Math.min(9, Math.max(3, Math.floor(prices.length * 0.3)));
+            // Calcular EMA12 e EMA26 para toda a série
+            const ema12Array = calculateEMAArray(prices, 12);
+            const ema26Array = calculateEMAArray(prices, 26);
             
-            // Calcular EMA para toda a série
-            const emaFastArray = calculateEMAArray(prices, fastPeriod);
-            const emaSlowArray = calculateEMAArray(prices, slowPeriod);
-            
-            // Calcular série MACD (diferença entre EMA rápida e EMA lenta)
+            // Calcular série MACD (diferença entre EMA12 e EMA26)
             const macdArray = [];
-            const startIndex = slowPeriod - 1; // Começar quando ambos os EMAs são válidos
-            
-            for (let i = startIndex; i < prices.length; i++) {
-                macdArray.push(emaFastArray[i] - emaSlowArray[i]);
+            for (let i = 0; i < prices.length; i++) {
+                macdArray.push(ema12Array[i] - ema26Array[i]);
             }
             
-            if (macdArray.length < signalPeriod) {
-                return { macd: 0, signal: 0, histogram: 0, text: 'N/D', divergence: null };
-            }
-            
-            // Calcular linha de sinal (EMA do MACD) usando TODA a série MACD, não apenas últimos 9
-            const signalArray = calculateEMAArray(macdArray, signalPeriod);
-            
+            // Calcular linha de sinal (EMA9 do MACD) - apenas últimos 9 pontos relevantes
+            const signalLine = calculateEMA(macdArray.slice(-9), 9);
             const macdLine = macdArray[macdArray.length - 1];
-            const signalLine = signalArray[signalArray.length - 1];
             const histogram = macdLine - signalLine;
-            
-            // Detectar convergência/divergência
-            let divergence = null;
-            if (macdArray.length >= 3) {
-                const prevHistogram = macdArray[macdArray.length - 2] - signalArray[signalArray.length - 2];
-                const histogramTrend = histogram - prevHistogram;
-                
-                if (histogram > 0 && histogramTrend > 0) {
-                    divergence = 'bullish_strong'; // Histograma positivo e crescente
-                } else if (histogram > 0 && histogramTrend < 0) {
-                    divergence = 'bullish_weak'; // Histograma positivo mas decrescente
-                } else if (histogram < 0 && histogramTrend < 0) {
-                    divergence = 'bearish_strong'; // Histograma negativo e decrescente
-                } else if (histogram < 0 && histogramTrend > 0) {
-                    divergence = 'bearish_weak'; // Histograma negativo mas crescente
-                }
-            }
-            
-            // Detectar cruzamentos recentes
-            let crossover = null;
-            if (macdArray.length >= 2) {
-                const prevMacd = macdArray[macdArray.length - 2];
-                const prevSignal = signalArray[signalArray.length - 2];
-                
-                if (prevMacd <= prevSignal && macdLine > signalLine) {
-                    crossover = 'bullish'; // Cruzamento de alta
-                } else if (prevMacd >= prevSignal && macdLine < signalLine) {
-                    crossover = 'bearish'; // Cruzamento de baixa
-                }
-            }
-            
-            // Gerar texto descritivo
-            let text = '';
-            if (crossover === 'bullish') {
-                text = '🟢 Cruzamento Alta';
-            } else if (crossover === 'bearish') {
-                text = '🔴 Cruzamento Baixa';
-            } else if (divergence === 'bullish_strong') {
-                text = '🚀 Alta Forte';
-            } else if (divergence === 'bearish_strong') {
-                text = '⬇️ Baixa Forte';
-            } else if (histogram > 0) {
-                text = '✅ Acima Sinal';
-            } else if (histogram < 0) {
-                text = '❌ Abaixo Sinal';
-            } else {
-                text = '➡️ Neutro';
-            }
             
             return {
                 macd: macdLine,
                 signal: signalLine,
                 histogram: histogram,
-                text: text,
-                divergence: divergence,
-                crossover: crossover,
-                raw: `${macdLine.toFixed(4)} / ${signalLine.toFixed(4)}`
+                text: `${macdLine.toFixed(4)} / ${signalLine.toFixed(4)}`
             };
         }
 
@@ -2141,419 +1919,187 @@
             return ema;
         }
 
-        // ===== BANDAS DE BOLLINGER OTIMIZADAS =====
+        // ===== BANDAS DE BOLLINGER =====
         function calculateBollingerBands(prices, period = 20, multiplier = 2) {
-            if (!prices || prices.length < 10) {
-                return { 
-                    upper: 0, middle: 0, lower: 0, 
-                    text: 'N/D', signal: null, 
-                    percentB: null, bandwidth: null, squeeze: false 
-                };
+            if (!prices || prices.length < period) {
+                return { upper: 0, middle: 0, lower: 0, text: 'N/D' };
             }
             
-            // Ajustar período para dados curtos
-            const effectivePeriod = Math.min(period, Math.max(10, prices.length - 1));
-            const recentPrices = prices.slice(-effectivePeriod);
+            const recentPrices = prices.slice(-period);
+            const middle = recentPrices.reduce((a, b) => a + b, 0) / period;
             
-            // Calcular média móvel (banda do meio)
-            const middle = recentPrices.reduce((a, b) => a + b, 0) / effectivePeriod;
-            
-            // Calcular desvio padrão POPULACIONAL (n em vez de n-1)
+            // Calcular desvio padrão
             const squaredDiffs = recentPrices.map(price => Math.pow(price - middle, 2));
-            const variance = squaredDiffs.reduce((a, b) => a + b, 0) / effectivePeriod;
+            const variance = squaredDiffs.reduce((a, b) => a + b, 0) / period;
             const stdDev = Math.sqrt(variance);
             
             const upper = middle + (stdDev * multiplier);
             const lower = middle - (stdDev * multiplier);
             
             const currentPrice = prices[prices.length - 1];
-            
-            // Calcular %B (posição relativa dentro das bandas)
-            // %B = (Preço - Banda Inferior) / (Banda Superior - Banda Inferior)
-            const percentB = ((currentPrice - lower) / (upper - lower)) * 100;
-            
-            // Calcular Bandwidth (medida de volatilidade)
-            // Bandwidth = (Banda Superior - Banda Inferior) / Banda do Meio
-            const bandwidth = ((upper - lower) / middle) * 100;
-            
-            // Detectar Squeeze (compressão de volatilidade)
-            // Squeeze acontece quando o bandwidth está abaixo de um threshold
-            const squeeze = bandwidth < 2; // Threshold de 2% para squeeze
-            
-            // Determinar posição e sinal
             let position = '';
-            let signal = null;
-            
-            if (currentPrice > upper) {
-                position = 'ACIMA';
-                signal = 'overbought'; // Sobrecompra
-            } else if (currentPrice < lower) {
-                position = 'ABAIXO';
-                signal = 'oversold'; // Sobrevenda
-            } else if (percentB < 33) {
-                position = 'TERÇO INF';
-                signal = 'buy_zone'; // Zona de compra
-            } else if (percentB > 67) {
-                position = 'TERÇO SUP';
-                signal = 'sell_zone'; // Zona de venda
-            } else {
-                position = 'DENTRO';
-                signal = 'neutral';
-            }
-            
-            // Gerar texto descritivo
-            let text = `${position} (${percentB.toFixed(1)}%)`;
-            if (squeeze) {
-                text += ' 🔥 SQUEEZE';
-            }
+            if (currentPrice > upper) position = 'ACIMA';
+            else if (currentPrice < lower) position = 'ABAIXO';
+            else position = 'DENTRO';
             
             return {
                 upper: upper,
                 middle: middle,
                 lower: lower,
-                text: text,
-                signal: signal,
-                percentB: percentB,
-                bandwidth: bandwidth,
-                squeeze: squeeze,
-                currentPrice: currentPrice
+                text: `${position} (${((currentPrice - lower) / (upper - lower) * 100).toFixed(1)}%)`
             };
         }
 
-        // ===== ATR (AVERAGE TRUE RANGE) MELHORADO =====
+        // ===== ATR (AVERAGE TRUE RANGE) - NOVA FUNÇÃO =====
         function calculateATR(prices, period = 14) {
-            if (!prices || prices.length < 7) {
-                return { text: 'N/D', value: 0, percent: 0, volatility: 'unknown' };
+            if (!prices || prices.length < period + 1) {
+                return { text: 'N/D', value: 0 };
             }
-            
-            // Ajustar período para dados curtos
-            const effectivePeriod = Math.min(period, Math.max(7, Math.floor(prices.length * 0.6)));
             
             let trueRanges = [];
             
-            // Calcular True Range considerando gaps (diferença entre high e low, incluindo gaps de preço)
             for (let i = 1; i < prices.length; i++) {
-                const high = prices[i];
-                const low = prices[i];
-                const prevClose = prices[i - 1];
-                
-                // True Range é o maior de:
-                // 1. High - Low (range da barra atual)
-                // 2. |High - Previous Close| (gap de alta)
-                // 3. |Low - Previous Close| (gap de baixa)
-                const tr1 = Math.abs(high - low);
-                const tr2 = Math.abs(high - prevClose);
-                const tr3 = Math.abs(low - prevClose);
-                
-                const trueRange = Math.max(tr1, tr2, tr3);
+                const high = Math.max(prices[i], prices[i-1]);
+                const low = Math.min(prices[i], prices[i-1]);
+                const trueRange = high - low;
                 trueRanges.push(trueRange);
             }
             
-            if (trueRanges.length < effectivePeriod) {
-                return { text: 'N/D', value: 0, percent: 0, volatility: 'unknown' };
-            }
-            
-            // Calcular primeira média simples
+            // Calcular ATR como média móvel simples dos True Ranges
             let atr = 0;
-            for (let i = 0; i < effectivePeriod; i++) {
-                atr += trueRanges[i];
+            for (let i = 0; i < period; i++) {
+                atr += trueRanges[trueRanges.length - 1 - i] || 0;
             }
-            atr /= effectivePeriod;
+            atr = atr / period;
             
-            // Usar EMA (Exponential Moving Average) em vez de SMA para suavização
-            const multiplier = 1 / effectivePeriod;
-            for (let i = effectivePeriod; i < trueRanges.length; i++) {
-                atr = (trueRanges[i] * multiplier) + (atr * (1 - multiplier));
-            }
-            
-            // Calcular percentual em relação ao preço atual (normalização por preço)
+            // Calcular percentual em relação ao preço atual
             const currentPrice = prices[prices.length - 1];
             const atrPercent = (atr / currentPrice) * 100;
             
-            // Determinar ranking de volatilidade
-            let volatility = 'medium';
-            if (atrPercent < 2) {
-                volatility = 'very_low';
-            } else if (atrPercent < 4) {
-                volatility = 'low';
-            } else if (atrPercent < 6) {
-                volatility = 'medium';
-            } else if (atrPercent < 10) {
-                volatility = 'high';
-            } else {
-                volatility = 'very_high';
-            }
-            
-            // Mapeamento de texto para volatilidade
-            const volatilityText = {
-                'very_low': '🟢 Muito Baixa',
-                'low': '🟡 Baixa',
-                'medium': '🟠 Média',
-                'high': '🔴 Alta',
-                'very_high': '⚫ Muito Alta'
-            };
-            
             return {
-                text: `${atrPercent.toFixed(2)}% • ${volatilityText[volatility]}`,
+                text: `${atr.toFixed(4)} (${atrPercent.toFixed(2)}%)`,
                 value: atr,
-                percent: atrPercent,
-                volatility: volatility,
-                raw: `${atr.toFixed(6)}`
+                percent: atrPercent
             };
         }
 
-        // ===== SCORE DE CONFLUÊNCIA TÉCNICA REFINADO =====
-        /**
-         * Sistema de pontuação ponderada melhorado baseado em múltiplos indicadores
-         * 
-         * RSI (25%):
-         * - 20-30: +25 pontos (forte sobrevenda)
-         * - 30-40: +20 pontos (sobrevenda moderada)
-         * - 40-60: +15 pontos (neutro saudável)
-         * - 60-70: +5 pontos (início de sobrecompra)
-         * - >70: 0 pontos (sobrecompra)
-         * 
-         * MACD (20%):
-         * - Histogram > 0 e crescente + linha acima sinal: +20
-         * - Histogram > 0 mas decrescente: +15
-         * - Cruzamento recente (bullish): +18
-         * - Histogram < 0: pontuação proporcional à proximidade de zero
-         * 
-         * Bollinger (15%):
-         * - Preço tocando banda inferior: +15
-         * - Preço no terço inferior: +12
-         * - Squeeze (baixa volatilidade): +10
-         * - Preço no terço superior: +5
-         * - Preço tocando banda superior: 0
-         * 
-         * Suporte/Resistência (20%):
-         * - Proximidade suporte <2%: +20
-         * - Proximidade suporte 2-5%: +15
-         * - Meio do range: +10
-         * - Proximidade resistência: pontuação decrescente
-         * 
-         * Volume (10%):
-         * - Volume >5% market cap: +10
-         * - Volume 2-5%: +7
-         * - Volume 1-2%: +4
-         * - Volume <1%: 0
-         * 
-         * Fase Wyckoff (10%):
-         * - Acumulação + sinais confirmados: +10
-         * - Acumulação sem sinais: +7
-         * - Neutro: +5
-         * - Distribuição: 0
-         */
+        // ===== SCORE DE CONFLUÊNCIA TÉCNICA - NOVA FUNÇÃO =====
         function calculateTechnicalConfluenceScore(item) {
             let score = 0;
             let factors = [];
-            let maxScore = 0;
             
             // 1. RSI (peso 25%)
             if (item.rsi_real && item.rsi_real.value !== null) {
                 const rsi = item.rsi_real.value;
                 let rsiScore = 0;
                 
-                if (rsi >= 20 && rsi <= 30) {
-                    rsiScore = 25; // Forte sobrevenda
-                } else if (rsi > 30 && rsi <= 40) {
-                    rsiScore = 20; // Sobrevenda moderada
-                } else if (rsi > 40 && rsi <= 60) {
-                    rsiScore = 15; // Neutro saudável
-                } else if (rsi > 60 && rsi <= 70) {
-                    rsiScore = 5; // Início de sobrecompra
-                } else if (rsi > 70) {
-                    rsiScore = 0; // Sobrecompra
-                } else {
-                    rsiScore = 25; // RSI < 20 é extrema sobrevenda
-                }
+                if (rsi <= 30) rsiScore = 25; // Sobre-vendido
+                else if (rsi >= 70) rsiScore = 0; // Sobre-comprado
+                else if (rsi >= 40 && rsi <= 60) rsiScore = 20; // Neutro saudável
+                else if (rsi < 40) rsiScore = 15; // Levemente sobre-vendido
+                else rsiScore = 5; // Levemente sobre-comprado
                 
                 score += rsiScore;
-                maxScore += 25;
                 factors.push(`RSI: ${rsiScore}/25`);
             }
             
             // 2. MACD (peso 20%)
             if (item.macd && item.macd.histogram !== null) {
+                const macdHistogram = item.macd.histogram;
                 let macdScore = 0;
                 
-                // Cruzamento bullish recente
-                if (item.macd.crossover === 'bullish') {
-                    macdScore = 18;
-                }
-                // Histogram positivo e crescente
-                else if (item.macd.divergence === 'bullish_strong') {
-                    macdScore = 20;
-                }
-                // Histogram positivo mas decrescente
-                else if (item.macd.divergence === 'bullish_weak') {
-                    macdScore = 15;
-                }
-                // Histogram negativo mas crescente (aproximando de cruzamento)
-                else if (item.macd.divergence === 'bearish_weak') {
-                    const proximityToZero = Math.max(0, 1 - Math.abs(item.macd.histogram) / (Math.abs(item.macd.macd) + 0.0001));
-                    macdScore = Math.floor(proximityToZero * 12); // 0-12 pontos
-                }
-                // Histogram negativo e decrescente
-                else if (item.macd.divergence === 'bearish_strong') {
-                    macdScore = 0;
-                }
-                // Fallback para análise simples
-                else if (item.macd.histogram > 0 && item.macd.macd > item.macd.signal) {
-                    macdScore = 18;
-                } else if (item.macd.histogram > 0) {
-                    macdScore = 15;
-                } else if (item.macd.histogram < 0 && item.macd.histogram > -0.0001) {
-                    macdScore = 10;
+                if (macdHistogram > 0 && item.macd.macd > item.macd.signal) {
+                    macdScore = 20; // MACD positivo e acima da linha de sinal
+                } else if (macdHistogram < 0 && item.macd.macd < item.macd.signal) {
+                    macdScore = 0; // MACD negativo e abaixo da linha de sinal
+                } else if (macdHistogram > 0) {
+                    macdScore = 15; // MACD positivo mas cruzamento pendente
                 } else {
-                    macdScore = 5;
+                    macdScore = 5; // MACD negativo mas cruzamento pendente
                 }
                 
                 score += macdScore;
-                maxScore += 20;
                 factors.push(`MACD: ${macdScore}/20`);
             }
             
             // 3. Bollinger Bands (peso 15%)
-            if (item.bollinger_bands && item.bollinger_bands.percentB !== null) {
+            if (item.bollinger_bands && item.current_price) {
+                const bb = item.bollinger_bands;
+                const price = item.current_price;
                 let bbScore = 0;
-                const percentB = item.bollinger_bands.percentB;
-                const squeeze = item.bollinger_bands.squeeze;
                 
-                // Preço tocando ou abaixo da banda inferior
-                if (percentB <= 0) {
-                    bbScore = 15;
-                }
-                // Preço no terço inferior
-                else if (percentB < 33) {
-                    bbScore = 12;
-                }
-                // Preço no terço médio
-                else if (percentB <= 67) {
-                    bbScore = 8;
-                }
-                // Preço no terço superior
-                else if (percentB < 100) {
-                    bbScore = 5;
-                }
-                // Preço tocando ou acima da banda superior
-                else {
-                    bbScore = 0;
-                }
-                
-                // Bonus para squeeze (baixa volatilidade, potencial rompimento)
-                if (squeeze && bbScore > 5) {
-                    bbScore = Math.min(15, bbScore + 3);
-                    factors.push(`BB: ${bbScore}/15 (Squeeze!)`);
+                if (price < bb.lower) {
+                    bbScore = 15; // Preço abaixo da banda inferior (sobre-venda)
+                } else if (price > bb.upper) {
+                    bbScore = 0; // Preço acima da banda superior (sobre-compra)
+                } else if (price > bb.lower && price < bb.middle) {
+                    bbScore = 12; // Preço na metade inferior (potencial compra)
                 } else {
-                    factors.push(`BB: ${bbScore}/15`);
+                    bbScore = 8; // Preço na metade superior (cautela)
                 }
                 
                 score += bbScore;
-                maxScore += 15;
+                factors.push(`BB: ${bbScore}/15`);
             }
             
             // 4. Suporte/Resistência (peso 20%)
-            if (item.support_proximity && item.support_proximity.percent !== null) {
-                let srScore = 0;
-                const supportDist = item.support_proximity.percent;
-                
-                // Proximidade suporte <2%
-                if (supportDist < 2) {
-                    srScore = 20;
-                }
-                // Proximidade suporte 2-5%
-                else if (supportDist < 5) {
-                    srScore = 15;
-                }
-                // Meio do range
-                else if (supportDist < 40) {
-                    srScore = 10;
-                }
-                // Próximo da resistência
-                else {
-                    // Pontuação decrescente conforme se aproxima da resistência
-                    srScore = Math.max(0, Math.floor(20 * (1 - supportDist / 100)));
-                }
-                
-                score += srScore;
-                maxScore += 20;
-                factors.push(`SR: ${srScore}/20`);
-            } else if (item.sr_proximity && item.sr_proximity.value !== null) {
-                // Fallback para método antigo
+            if (item.sr_proximity && item.sr_proximity.value !== null) {
                 const srValue = item.sr_proximity.value;
                 let srScore = 0;
                 
-                if (srValue <= 0.02) {
-                    srScore = 20;
-                } else if (srValue <= 0.05) {
-                    srScore = 15;
+                if (srValue <= 0.3) {
+                    srScore = 20; // Muito próximo do suporte
+                } else if (srValue >= 0.7) {
+                    srScore = 0; // Muito próximo da resistência
                 } else if (srValue <= 0.5) {
-                    srScore = 10;
+                    srScore = 15; // Próximo do suporte
                 } else {
-                    srScore = Math.max(0, Math.floor(20 * (1 - srValue)));
+                    srScore = 5; // Próximo da resistência
                 }
                 
                 score += srScore;
-                maxScore += 20;
                 factors.push(`SR: ${srScore}/20`);
             }
             
             // 5. Volume (peso 10%)
-            if (item.total_volume && item.market_cap) {
-                const volumeRatio = (item.total_volume / item.market_cap) * 100;
+            if (item.volume_indicator && item.volume_indicator.value !== null) {
+                const volumeRatio = item.volume_indicator.value;
                 let volumeScore = 0;
                 
                 if (volumeRatio > 5) {
-                    volumeScore = 10; // Volume >5% market cap
+                    volumeScore = 10; // Volume alto
                 } else if (volumeRatio > 2) {
-                    volumeScore = 7; // Volume 2-5%
+                    volumeScore = 7; // Volume médio
                 } else if (volumeRatio > 1) {
-                    volumeScore = 4; // Volume 1-2%
+                    volumeScore = 4; // Volume baixo
                 } else {
-                    volumeScore = 0; // Volume <1%
+                    volumeScore = 0; // Volume muito baixo
                 }
                 
                 score += volumeScore;
-                maxScore += 10;
                 factors.push(`Volume: ${volumeScore}/10`);
             }
             
             // 6. Fase Wyckoff (peso 10%)
             if (item.cycle_signal && item.cycle_signal.phase) {
                 let wyckoffScore = 0;
-                const hasSignals = item.wyckoff_signals && item.wyckoff_signals.length > 0;
                 
                 if (item.cycle_signal.phase === 'acc') {
-                    // Acumulação + sinais confirmados
-                    if (hasSignals) {
-                        wyckoffScore = 10;
-                        factors.push(`Wyckoff: ${wyckoffScore}/10 (Sinais!)`);
-                    } else {
-                        wyckoffScore = 7;
-                        factors.push(`Wyckoff: ${wyckoffScore}/10`);
-                    }
+                    wyckoffScore = 10; // Fase de acumulação
                 } else if (item.cycle_signal.phase === 'neutro') {
                     wyckoffScore = 5; // Fase neutra
-                    factors.push(`Wyckoff: ${wyckoffScore}/10`);
                 } else {
                     wyckoffScore = 0; // Fase de distribuição
-                    factors.push(`Wyckoff: ${wyckoffScore}/10`);
                 }
                 
                 score += wyckoffScore;
-                maxScore += 10;
+                factors.push(`Wyckoff: ${wyckoffScore}/10`);
             }
             
-            // Normalizar score para 0-100
-            const normalizedScore = maxScore > 0 ? (score / maxScore) * 100 : 0;
-            
             return {
-                score: Math.min(100, Math.max(0, normalizedScore)),
-                rawScore: score,
-                maxScore: maxScore,
+                score: Math.min(100, Math.max(0, score)),
                 factors: factors,
-                text: `${Math.round(normalizedScore)}/100`
+                text: `${score.toFixed(0)}/100`
             };
         }
 
@@ -3726,184 +3272,6 @@
         // --- NOVAS FUNÇÕES PARA DETECÇÃO DE SINAIS WYCKOFF ---
 
         // ===== DETECÇÃO AUTOMÁTICA DE SINAIS WYCKOFF - MELHORADA =====
-        // ===== SINAIS WYCKOFF ULTRA-PRECISOS =====
-        
-        /**
-         * Detecta Spring (Fase C) - Falsa quebra de suporte
-         * Critérios refinados:
-         * 1. Quebra de suporte dos últimos 7 dias
-         * 2. Distância da quebra: 0.5% a 3% abaixo do suporte
-         * 3. Recuperação rápida: retorno acima do suporte em até 6 horas
-         * 4. Volume na quebra: abaixo da média (30-70% da média 24h)
-         * 5. Volume na recuperação: acima da média (>120% da média 24h)
-         * 6. RSI deve estar abaixo de 40 durante a quebra
-         * 7. Preço atual deve estar acima do suporte + 1%
-         */
-        function detectSpring(item, prices, support) {
-            if (!prices || prices.length < 24) return null;
-            
-            const currentPrice = item.current_price;
-            const avgVolume24h = item.total_volume / 24;
-            const rsi = item.rsi_real ? item.rsi_real.value : 50;
-            
-            // Analisar últimas 24 horas (aproximadamente)
-            const last24h = prices.slice(-24);
-            const minPrice24h = Math.min(...last24h);
-            
-            // 1. Verificar quebra de suporte
-            const breakDistance = ((support - minPrice24h) / support) * 100;
-            if (breakDistance < 0.5 || breakDistance > 3) return null;
-            
-            // 2. Verificar recuperação rápida (preço atual deve estar acima do suporte)
-            if (currentPrice < support * 1.01) return null;
-            
-            // 3. Verificar RSI durante quebra (aproximação)
-            if (rsi > 40) return null;
-            
-            // 4. Volume na quebra e recuperação (aproximação com dados disponíveis)
-            const volumeRatio = item.volume_change_percentage || 0;
-            
-            // Calcular score de confiança
-            let confidence = 0;
-            if (breakDistance >= 0.5 && breakDistance <= 3) confidence += 30;
-            if (currentPrice > support * 1.01) confidence += 25;
-            if (rsi < 40) confidence += 20;
-            if (volumeRatio > 20) confidence += 15; // Volume em recuperação
-            if (item.price_change_percentage_1h_in_currency > 1) confidence += 10; // Recuperação rápida
-            
-            return {
-                type: 'spring',
-                name: 'Spring',
-                description: `Falsa quebra de suporte (${breakDistance.toFixed(2)}% abaixo) com recuperação rápida`,
-                confidence: Math.min(100, confidence),
-                details: {
-                    breakDistance: breakDistance,
-                    recoverySpeed: item.price_change_percentage_1h_in_currency,
-                    rsi: rsi
-                }
-            };
-        }
-        
-        /**
-         * Detecta SOS (Sign of Strength) - Fase D
-         * Critérios refinados:
-         * 1. Rompimento de resistência dos últimos 7 dias
-         * 2. Fechamento acima da resistência (>1% acima)
-         * 3. Volume no rompimento: >150% da média 24h
-         * 4. Vela de rompimento: corpo > 70% da vela total (aproximação com variação de preço)
-         * 5. Manutenção acima da resistência por pelo menos 2 horas
-         * 6. RSI entre 50-70 (não sobrecomprado)
-         * 7. MACD positivo e crescente
-         */
-        function detectSOS(item, resistance) {
-            const currentPrice = item.current_price;
-            const rsi = item.rsi_real ? item.rsi_real.value : 50;
-            const macd = item.macd;
-            const avgVolume24h = item.total_volume / 24;
-            
-            // 1 & 2. Rompimento acima da resistência
-            if (currentPrice < resistance * 1.01) return null;
-            
-            const breakoutDistance = ((currentPrice - resistance) / resistance) * 100;
-            
-            // 3. Volume no rompimento
-            const volumeStrength = item.volume_indicator ? item.volume_indicator.value : 1;
-            if (volumeStrength < 1.5) return null;
-            
-            // 4. Força da vela (aproximação com variação 24h)
-            const candleStrength = Math.abs(item.price_change_percentage_24h_in_currency || 0);
-            
-            // 5. Manutenção acima da resistência (aproximação com variação 1h)
-            const maintains = item.price_change_percentage_1h_in_currency >= 0;
-            
-            // 6. RSI não sobrecomprado
-            if (rsi < 50 || rsi > 70) return null;
-            
-            // 7. MACD positivo e crescente
-            const macdPositive = macd && macd.histogram > 0 && 
-                                 (macd.divergence === 'bullish_strong' || macd.crossover === 'bullish');
-            
-            // Calcular score de confiança
-            let confidence = 0;
-            if (breakoutDistance > 1) confidence += 25;
-            if (volumeStrength > 1.5) confidence += 25;
-            if (candleStrength > 5) confidence += 15;
-            if (maintains) confidence += 10;
-            if (rsi >= 50 && rsi <= 70) confidence += 15;
-            if (macdPositive) confidence += 10;
-            
-            return {
-                type: 'sos',
-                name: 'Sign of Strength',
-                description: `Rompimento de resistência (${breakoutDistance.toFixed(2)}% acima) com volume forte`,
-                confidence: Math.min(100, confidence),
-                details: {
-                    breakoutDistance: breakoutDistance,
-                    volumeStrength: volumeStrength,
-                    candleStrength: candleStrength,
-                    rsi: rsi,
-                    macdPositive: macdPositive
-                }
-            };
-        }
-        
-        /**
-         * Detecta Selling Climax (SC) - Fase A
-         * Critérios refinados:
-         * 1. Queda brusca: >5% em menos de 4 horas (aproximação com variação 1h)
-         * 2. Volume extremo: >300% da média 24h
-         * 3. Vela com sombra inferior longa (>40% da vela) - aproximação
-         * 4. RSI abaixo de 25 (extrema sobrevenda)
-         * 5. Recuperação imediata: >2% nas próximas 2 horas (aproximação)
-         * 6. Volume decrescente na recuperação
-         */
-        function detectSellingClimax(item, prices) {
-            const currentPrice = item.current_price;
-            const rsi = item.rsi_real ? item.rsi_real.value : 50;
-            const volumeStrength = item.volume_indicator ? item.volume_indicator.value : 1;
-            
-            // 1. Queda brusca (aproximação com dados disponíveis)
-            const drop24h = item.price_change_percentage_24h_in_currency || 0;
-            if (drop24h > -5) return null;
-            
-            // 2. Volume extremo
-            if (volumeStrength < 3) return null;
-            
-            // 3. Vela com sombra inferior longa (aproximação - se teve queda mas recuperou)
-            const hasLongWick = drop24h < -5 && item.price_change_percentage_1h_in_currency > 0;
-            
-            // 4. RSI extrema sobrevenda
-            if (rsi > 25) return null;
-            
-            // 5. Recuperação imediata (aproximação)
-            const recovery = item.price_change_percentage_1h_in_currency > 2;
-            
-            // Calcular score de confiança
-            let confidence = 0;
-            if (drop24h < -5) confidence += 20;
-            if (volumeStrength > 3) confidence += 25;
-            if (hasLongWick) confidence += 20;
-            if (rsi < 25) confidence += 20;
-            if (recovery) confidence += 15;
-            
-            return {
-                type: 'sc',
-                name: 'Selling Climax',
-                description: `Exaustão de venda (${Math.abs(drop24h).toFixed(2)}% queda) com volume extremo`,
-                confidence: Math.min(100, confidence),
-                details: {
-                    drop: Math.abs(drop24h),
-                    volumeStrength: volumeStrength,
-                    hasLongWick: hasLongWick,
-                    rsi: rsi,
-                    recovery: recovery
-                }
-            };
-        }
-        
-        /**
-         * Função principal que detecta todos os sinais Wyckoff
-         */
         function detectWyckoffSignals(item) {
             const signals = [];
             
@@ -3915,74 +3283,95 @@
             const prices = item.sparkline_data;
             const currentPrice = item.current_price;
             const volume = item.total_volume;
-            const avgVolume = volume / 24;
-            const supportLevel = item.range_estimates ? item.range_estimates.weekLow : currentPrice * 0.9;
-            const resistanceLevel = item.range_estimates ? item.range_estimates.weekHigh : currentPrice * 1.1;
+            const avgVolume = item.total_volume / 24; // Volume médio por hora aproximado
             
-            // Detectar Spring
-            const spring = detectSpring(item, prices, supportLevel);
-            if (spring && spring.confidence > 60) {
-                signals.push(spring);
+            // 1. Selling Climax (SC) - Volume extremamente alto com queda de preço
+            if (volume > avgVolume * 3 && item.price_change_percentage_24h_in_currency < -5) {
+                signals.push({
+                    type: 'sc',
+                    name: 'Selling Climax',
+                    description: 'Volume extremamente alto com queda de preço - possivel exaustão de venda'
+                });
             }
             
-            // Detectar SOS
-            const sos = detectSOS(item, resistanceLevel);
-            if (sos && sos.confidence > 60) {
-                signals.push(sos);
-            }
-            
-            // Detectar Selling Climax
-            const sc = detectSellingClimax(item, prices);
-            if (sc && sc.confidence > 60) {
-                signals.push(sc);
-            }
-            
-            // 4. Automatic Rally (AR) - Recuperação rápida após queda
+            // 2. Automatic Rally (AR) - Recuperação rápida após queda
             if (item.price_change_percentage_1h_in_currency > 3 && 
                 item.price_change_percentage_24h_in_currency < -2) {
                 signals.push({
                     type: 'ar',
                     name: 'Automatic Rally',
-                    description: 'Recuperação rápida após queda - demanda institucional',
-                    confidence: 70
+                    description: 'Recuperação rápida após queda - demanda institucional'
                 });
             }
             
-            // 5. Upthrust After Distribution (UTAD)
+            // 3. Spring (Fase C) - Falsa quebra de suporte seguida de recuperação
+            const supportLevel = item.range_estimates.weekLow;
+            if (currentPrice < supportLevel * 1.02 && 
+                currentPrice > supportLevel * 0.98 &&
+                item.price_change_percentage_1h_in_currency > 1) {
+                signals.push({
+                    type: 'spring',
+                    name: 'Spring',
+                    description: 'Falsa quebra de suporte seguida de recuperação - acumulação'
+                });
+            }
+            
+            // 4. Upthrust After Distribution (UTAD) - Falsa quebra de resistência seguida de rejeição
+            const resistanceLevel = item.range_estimates.weekHigh;
             if (currentPrice > resistanceLevel * 0.98 && 
                 currentPrice < resistanceLevel * 1.02 &&
                 item.price_change_percentage_1h_in_currency < -1) {
                 signals.push({
                     type: 'utad',
-                    name: 'UTAD',
-                    description: 'Falsa quebra de resistência seguida de rejeição - distribuição',
-                    confidence: 65
+                    name: 'Upthrust After Distribution',
+                    description: 'Falsa quebra de resistência seguida de rejeição - distribuição'
                 });
             }
             
-            // 6. Last Point of Supply (LPSY)
+            // 5. Sign of Strength (SOS) - Rompimento de resistência com volume
+            if (currentPrice > resistanceLevel * 1.02 && 
+                volume > avgVolume * 1.5 &&
+                item.price_change_percentage_24h_in_currency > 5) {
+                signals.push({
+                    type: 'sos',
+                    name: 'Sign of Strength',
+                    description: 'Rompimento de resistência com volume - início de markup'
+                });
+            }
+            
+            // 6. Last Point of Supply (LPSY) - Teste de resistência com volume reduzido
             if (currentPrice > resistanceLevel * 0.98 && 
                 currentPrice < resistanceLevel * 1.02 &&
                 volume < avgVolume * 0.8 &&
                 item.price_change_percentage_24h_in_currency < 2) {
                 signals.push({
                     type: 'lpsy',
-                    name: 'LPSY',
-                    description: 'Teste de resistência com volume reduzido - possível reversão',
-                    confidence: 60
+                    name: 'Last Point of Supply',
+                    description: 'Teste de resistência com volume reduzido - possível reversão'
                 });
             }
             
-            // 7. Last Point of Support (LPS)
+            // NOVO: Teste Secundário (ST)
+            if (signals.find(s => s.type === 'sc') && 
+                item.price_change_percentage_24h_in_currency < -2 &&
+                volume > avgVolume * 1.5 &&
+                volume < avgVolume * 3) {
+                signals.push({
+                    type: 'st',
+                    name: 'Secondary Test',
+                    description: 'Teste secundário após Selling Climax - confirmação de fundo'
+                });
+            }
+            
+            // NOVO: Last Point of Support (LPS)
             if (currentPrice < supportLevel * 1.02 && 
                 currentPrice > supportLevel * 0.98 &&
                 volume < avgVolume * 0.7 &&
                 item.price_change_percentage_24h_in_currency > -1) {
                 signals.push({
                     type: 'lps',
-                    name: 'LPS',
-                    description: 'Último ponto de suporte antes de markup - entrada ideal',
-                    confidence: 75
+                    name: 'Last Point of Support',
+                    description: 'Último ponto de suporte antes de markup - entrada ideal'
                 });
             }
             
