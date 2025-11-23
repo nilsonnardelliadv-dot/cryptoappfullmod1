@@ -487,47 +487,96 @@
             transform: none;
         }
         
-        /* NOVOS ESTILOS PARA CARDS COM INDICAÇÃO DE COMPRA */
+        /* CARDS COM INDICAÇÃO DE COMPRA - MODERNIZADOS */
         .card.buy-perfect {
-            background: var(--card-buy-perfect-bg);
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.15) 0%, 
+                rgba(5, 150, 105, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 2px solid var(--card-buy-perfect-border);
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3),
+                        0 0 0 1px rgba(16, 185, 129, 0.1) inset;
+            animation: pulseGreen 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGreen {
+            0%, 100% {
+                box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3),
+                            0 0 0 1px rgba(16, 185, 129, 0.1) inset;
+            }
+            50% {
+                box-shadow: 0 12px 40px rgba(16, 185, 129, 0.5),
+                            0 0 0 1px rgba(16, 185, 129, 0.2) inset;
+            }
         }
         
         .card.buy-perfect::before {
-            content: "🟢 COMPRA IDEAL";
+            content: "🎯 COMPRA IDEAL";
             position: absolute;
-            top: 8px;
-            right: 12px;
-            background: var(--card-buy-perfect);
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--card-buy-perfect) 0%, #059669 100%);
             color: white;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.65rem;
-            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
             letter-spacing: 0.5px;
             z-index: 10;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            animation: slideInRight 0.5s ease-out;
         }
         
         .card.buy-near {
-            background: var(--card-buy-near-bg);
+            background: linear-gradient(135deg, 
+                rgba(251, 191, 36, 0.15) 0%, 
+                rgba(245, 158, 11, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 2px solid var(--card-buy-near-border);
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+            box-shadow: 0 8px 32px rgba(251, 191, 36, 0.3),
+                        0 0 0 1px rgba(251, 191, 36, 0.1) inset;
+            animation: pulseYellow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseYellow {
+            0%, 100% {
+                box-shadow: 0 8px 32px rgba(251, 191, 36, 0.3),
+                            0 0 0 1px rgba(251, 191, 36, 0.1) inset;
+            }
+            50% {
+                box-shadow: 0 12px 40px rgba(251, 191, 36, 0.5),
+                            0 0 0 1px rgba(251, 191, 36, 0.2) inset;
+            }
         }
         
         .card.buy-near::before {
-            content: "⚠️ PRÓXIMO";
+            content: "⚡ OPORTUNIDADE PRÓXIMA";
             position: absolute;
-            top: 8px;
-            right: 12px;
-            background: var(--card-buy-near);
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--card-buy-near) 0%, #d97706 100%);
             color: white;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.65rem;
-            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
             letter-spacing: 0.5px;
             z-index: 10;
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .card-header {
@@ -4556,43 +4605,54 @@
                         }
                         return `
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">1</div>
+                                <div class="tooltip-step-number">🎯</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Definição Técnica:</strong> Mede o desempenho relativo do ativo em comparação com o Bitcoin no período especificado.
+                                    <strong>O QUE É ALPHA vs BTC?</strong><br>
+                                    É uma "competição" entre ${ticker} e Bitcoin. Te mostra quem está "ganhando a corrida" no período.
+                                    <br><br>
+                                    <strong>Pense assim:</strong> Se você tivesse R$100 para investir, ganharia mais com ${ticker} ou com Bitcoin?
+                                    O Alpha te responde isso!
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">2</div>
+                                <div class="tooltip-step-number">📊</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Cálculo:</strong> Variação % do ativo - Variação % do BTC no mesmo período.
-                                </div>
-                            </div>
-                            <div class="tooltip-step">
-                                <div class="tooltip-step-number">3</div>
-                                <div class="tooltip-step-content">
-                                    <strong>Interpretação:</strong>
-                                    <ul>
-                                        <li><strong>>+5%:</strong> Forte outperformance (altcoin season)</li>
-                                        <li><strong>0% a +5%:</strong> Leve outperformance</li>
-                                        <li><strong>-5% a 0%:</strong> Underperformance leve</li>
-                                        <li><strong><-5%:</strong> Forte underperformance</li>
+                                    <strong>COMO LER (BEM SIMPLES):</strong>
+                                    <ul style="margin: 8px 0; padding-left: 20px;">
+                                        <li><strong>🟢 ALPHA POSITIVO (+5% ou mais):</strong> ${ticker} está subindo MAIS que Bitcoin! É "altcoin season" para esta moeda</li>
+                                        <li><strong>🟡 ALPHA LEVEMENTE POSITIVO (0% a +5%):</strong> ${ticker} está ganhando de Bitcoin, mas pouco</li>
+                                        <li><strong>🟠 ALPHA LEVEMENTE NEGATIVO (-5% a 0%):</strong> ${ticker} está perdendo de Bitcoin, mas pouco</li>
+                                        <li><strong>🔴 ALPHA NEGATIVO (-5% ou menos):</strong> ${ticker} está MUITO mais fraco que Bitcoin</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">4</div>
+                                <div class="tooltip-step-number">💡</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Como usar neste painel:</strong> Altcoins com alpha positivo tendem a performar melhor em altseasons. Alpha negativo pode indicar fraqueza.
+                                    <strong>POR QUE ISSO IMPORTA?</strong><br>
+                                    Bitcoin é o "rei" das criptomoedas. Quando altcoins têm Alpha positivo, significa que estão 
+                                    performando melhor que o "padrão ouro" do mercado.
+                                    <br><br>
+                                    • <strong>Alpha ALTO:</strong> Melhor investir em ${ticker} do que em Bitcoin neste momento<br>
+                                    • <strong>Alpha BAIXO:</strong> Melhor investir em Bitcoin do que em ${ticker}<br>
+                                    • <strong>Alpha NEGATIVO persistente:</strong> ${ticker} pode estar em tendência de baixa ou perdendo relevância
                                 </div>
                             </div>
                             <div class="tooltip-step">
-                                <div class="tooltip-step-number">5</div>
+                                <div class="tooltip-step-number">⚠️</div>
                                 <div class="tooltip-step-content">
-                                    <strong>Armadilhas:</strong> Alpha positivo em bear markets pode ser apenas "menos pior". Considere sempre o contexto de mercado.
+                                    <strong>CUIDADO:</strong><br>
+                                    • Alpha positivo em mercado em queda pode significar apenas "caiu menos que Bitcoin"<br>
+                                    • Nem sempre Alpha alto se mantém - pode ser temporário<br>
+                                    • Considere o contexto: se Bitcoin está caindo 20% e ${ticker} caindo 15%, tem Alpha positivo mas ambos estão caindo!<br>
+                                    • Use Alpha junto com outros indicadores, nunca sozinho
                                 </div>
                             </div>
                             <div class="tooltip-example">
-                                <strong>Exemplo Prático:</strong> ${vsBtcInterpretation}
+                                <strong>🔍 SITUAÇÃO DE ${ticker}:</strong><br>
+                                ${vsBtcInterpretation}
+                                <br><br>
+                                <strong>🎓 EM RESUMO:</strong> Alpha positivo = ${ticker} está "correndo mais rápido" que Bitcoin. Alpha negativo = Bitcoin está melhor!
                             </div>
                         `;
 
